@@ -1,0 +1,196 @@
+{
+  "NAB": [
+    {
+      "column_ref": "B",
+      "property_type": "Commercial, Retail & Industrial Sub $5 mil",
+      "full_header": "NAB Commercial, Retail & Industrial Sub $5 mil",
+      "section_count": 24
+    },
+    {
+      "column_ref": "C",
+      "property_type": "Residential Development & Built Form (Multi-Dwelling)",
+      "full_header": "NAB Residential Development & Built Form (Multi-Dwelling)",
+      "section_count": 24
+    },
+    {
+      "column_ref": "D",
+      "property_type": "Non-Residential Development",
+      "full_header": "NAB Non-Residential Development",
+      "section_count": 24
+    },
+    {
+      "column_ref": "E",
+      "property_type": "Commercial, Retail & Industrial Valuations above $5m",
+      "full_header": "NAB Commercial, Retail & Industrial Valuations above $5m",
+      "section_count": 24
+    },
+    {
+      "column_ref": "F",
+      "property_type": "Shopping Centre Valuations",
+      "full_header": "NAB Shopping Centre Valuations",
+      "section_count": 23
+    },
+    {
+      "column_ref": "G",
+      "property_type": "Englobo/Subdivisonal Land Valuation",
+      "full_header": "NAB Englobo/Subdivisonal Land Valuation",
+      "section_count": 23
+    },
+    {
+      "column_ref": "H",
+      "property_type": "Specialised Commercial \u2013 Freehold / Leasehold Going Concern",
+      "full_header": "NAB Specialised Commercial \u2013 Freehold / Leasehold Going Concern",
+      "section_count": 24
+    },
+    {
+      "column_ref": "I",
+      "property_type": "Specialised Commercial \u2013 Freehold / Lessor\u2019s Interest",
+      "full_header": "NAB Specialised Commercial \u2013 Freehold / Lessor\u2019s Interest",
+      "section_count": 24
+    },
+    {
+      "column_ref": "J",
+      "property_type": "Specialised Commercial \u2013 Health",
+      "full_header": "NAB Specialised Commercial \u2013 Health",
+      "section_count": 24
+    },
+    {
+      "column_ref": "K",
+      "property_type": "Specialised Commercial \u2013 Education",
+      "full_header": "NAB Specialised Commercial \u2013 Education",
+      "section_count": 22
+    },
+    {
+      "column_ref": "L",
+      "property_type": "Specialised Commercial \u2013 Specialist Disability Accommodation (SDA)",
+      "full_header": "NAB Specialised Commercial \u2013 Specialist Disability Accommodation (SDA)",
+      "section_count": 23
+    }
+  ],
+  "CBA": [
+    {
+      "column_ref": "M",
+      "property_type": "Commercial Desktop",
+      "full_header": "CBA Commercial Desktop",
+      "section_count": 24
+    },
+    {
+      "column_ref": "N",
+      "property_type": "Commercial Property - Short Report",
+      "full_header": "CBA Commercial Property - Short Report",
+      "section_count": 24
+    },
+    {
+      "column_ref": "O",
+      "property_type": "Commercial Property - Full Report",
+      "full_header": "CBA Commercial Property - Full Report",
+      "section_count": 24
+    },
+    {
+      "column_ref": "P",
+      "property_type": "Going Concern",
+      "full_header": "CBA Going Concern",
+      "section_count": 23
+    },
+    {
+      "column_ref": "Q",
+      "property_type": "Going Concern - Leasehold Pharmacy",
+      "full_header": "CBA Going Concern - Leasehold Pharmacy",
+      "section_count": 23
+    },
+    {
+      "column_ref": "R",
+      "property_type": "Going Concern \u2013 Rent Rolls",
+      "full_header": "CBA Going Concern \u2013 Rent Rolls",
+      "section_count": 23
+    }
+  ],
+  "Westpac": [
+    {
+      "column_ref": "S",
+      "property_type": "Office / Industrial / Retail / Non Specialised Property",
+      "full_header": "Westpac/St Geroge Office / Industrial / Retail / Non Specialised Property",
+      "section_count": 23
+    },
+    {
+      "column_ref": "T",
+      "property_type": "Residential Investment Property",
+      "full_header": "Westpac/St Geroge Residential Investment Property",
+      "section_count": 24
+    },
+    {
+      "column_ref": "U",
+      "property_type": "Medium/High Density Res Dev",
+      "full_header": "Westpac/St Geroge Medium/High Density Res Dev",
+      "section_count": 24
+    },
+    {
+      "column_ref": "V",
+      "property_type": "Industrial/Commercial/Retail/Hotel Developments",
+      "full_header": "Westpac/St Geroge Industrial/Commercial/Retail/Hotel Developments",
+      "section_count": 24
+    },
+    {
+      "column_ref": "W",
+      "property_type": "Accommodation Hotels/Motels",
+      "full_header": "Westpac/St Geroge Accommodation Hotels/Motels",
+      "section_count": 24
+    },
+    {
+      "column_ref": "X",
+      "property_type": "Aged Care Accommodation",
+      "full_header": "Westpac/St Geroge Aged Care Accommodation",
+      "section_count": 23
+    },
+    {
+      "column_ref": "Y",
+      "property_type": "Specialised Property",
+      "full_header": "Westpac/St Geroge Specialised Property",
+      "section_count": 23
+    }
+  ],
+  "ANZ": [
+    {
+      "column_ref": "Z",
+      "property_type": "General",
+      "full_header": "ANZ General",
+      "section_count": 24
+    },
+    {
+      "column_ref": "AA",
+      "property_type": "Shopping Centres",
+      "full_header": "ANZ Shopping Centres",
+      "section_count": 24
+    },
+    {
+      "column_ref": "AB",
+      "property_type": "Developments and subdivisions",
+      "full_header": "ANZ Developments and subdivisions",
+      "section_count": 23
+    },
+    {
+      "column_ref": "AC",
+      "property_type": "Hospitality assets",
+      "full_header": "ANZ Hospitality assets",
+      "section_count": 24
+    },
+    {
+      "column_ref": "AD",
+      "property_type": "Special purpose properties",
+      "full_header": "ANZ Special purpose properties",
+      "section_count": 24
+    },
+    {
+      "column_ref": "AE",
+      "property_type": "Residential aged care facilities",
+      "full_header": "ANZ Residential aged care facilities",
+      "section_count": 23
+    },
+    {
+      "column_ref": "AF",
+      "property_type": "Retirement village component",
+      "full_header": "ANZ Retirement village component",
+      "section_count": 20
+    }
+  ]
+}

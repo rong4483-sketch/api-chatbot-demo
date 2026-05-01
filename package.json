@@ -1,0 +1,22 @@
+{
+  "name": "api-chatbot-demo",
+  "version": "1.0.0",
+  "description": "API Member Assistant demo for NPC 2026: chat with API standards lookup and bank SI lookup. Cloudflare Pages.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler pages dev public --compatibility-date=2026-04-15",
+    "deploy": "wrangler pages deploy public --project-name=api-chatbot-demo",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "unpdf": "^0.12.1",
+    "flexsearch": "^0.7.43"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0",
+    "wrangler": "^3.95.0",
+    "@cloudflare/workers-types": "^4.20250101.0",
+    "@types/flexsearch": "^0.7.6"
+  }
+}
