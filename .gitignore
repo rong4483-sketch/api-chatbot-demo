@@ -1,0 +1,26 @@
+# Dependencies
+node_modules/
+
+# Build artefacts
+dist/
+.wrangler/
+
+# Local secrets and env files (never commit)
+.env
+.env.local
+.env.*.local
+*.key
+*Key.txt
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
