@@ -47,8 +47,11 @@ export function buildSlimSystemBlock(sources: CachedBlockSources): string {
   return [
     BASE_SYSTEM_PROMPT,
     '',
-    '(Note: detailed SI section content is unavailable on this fallback path. ' +
-      'You can identify which template applies but cannot quote section text.)',
+    '(Capability note for this path. Section text is not loaded here, so quoting it is not possible. ' +
+      'You still have the lookup index, so you can return the column reference, section count, and ' +
+      'lender to property type mapping. If the user asks for specific section text, return the column ' +
+      'reference and section count, then ask them to retry in a moment or to open the named template ' +
+      'directly (for example, NAB Shopping Centre Valuations, column F).)',
     '',
     '---',
     'SI Lookup Index (lender to property type to column ref + section count)',

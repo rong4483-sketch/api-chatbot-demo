@@ -17,7 +17,7 @@ interface GeminiCache {
 }
 
 const MODEL = 'gemini-2.5-flash';
-const CACHE_TTL_SECONDS = 300;
+const CACHE_TTL_SECONDS = 3600;
 const API_BASE = 'https://generativelanguage.googleapis.com/v1beta';
 
 declare global {

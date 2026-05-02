@@ -22,9 +22,9 @@ interface RequestBody {
   uploadedDocs?: { name: string; text: string }[];
 }
 
-// 10s accounts for cold-start: flexsearch index + Gemini cache create.
+// 20s accounts for cold-start: flexsearch index + Gemini cache create.
 // Warm calls return first token in well under 1s.
-const FIRST_TOKEN_TIMEOUT_MS = 10000;
+const FIRST_TOKEN_TIMEOUT_MS = 20000;
 
 type ProviderFn = (opts: StreamChatOpts) => AsyncIterable<string>;
 
@@ -121,6 +121,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
               if (!firstTokenSent) {
                 firstTokenSent = true;
                 clearTimeout(timeoutId);
+                console.log(`served by: ${provider.name}`);
               }
               send({ text });
             }
