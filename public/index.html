@@ -104,7 +104,7 @@
     transform: scale(0.92) translateY(16px);
     opacity: 0;
     pointer-events: none;
-    transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), opacity 0.2s ease;
+    transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), opacity 0.2s ease, width 0.25s ease, height 0.25s ease;
     transform-origin: bottom right;
     border: 1px solid var(--border);
   }
@@ -112,6 +112,10 @@
     transform: scale(1) translateY(0);
     opacity: 1;
     pointer-events: all;
+  }
+  #chat-widget.expanded {
+    width: 880px;
+    height: 820px;
   }
 
   .chat-header {
@@ -152,6 +156,27 @@
     transition: background 0.15s;
   }
   .reset-btn:hover { background: rgba(255,255,255,0.22); color: var(--white); }
+
+  .expand-btn {
+    background: rgba(255,255,255,0.12);
+    border: none;
+    border-radius: 6px;
+    color: rgba(255,255,255,0.75);
+    cursor: pointer;
+    flex-shrink: 0;
+    padding: 4px 6px;
+    display: inline-flex;
+    align-items: center;
+    transition: background 0.15s, color 0.15s;
+  }
+  .expand-btn:hover { background: rgba(255,255,255,0.22); color: var(--white); }
+  .expand-btn svg { display: block; }
+  .expand-btn .icon-collapse { display: none; }
+  #chat-widget.expanded .expand-btn .icon-expand { display: none; }
+  #chat-widget.expanded .expand-btn .icon-collapse { display: block; }
+  @media (max-width: 480px) {
+    .expand-btn { display: none; }
+  }
 
   .upload-bar {
     padding: 8px 14px;
@@ -356,6 +381,38 @@
     align-self: flex-start;
     max-width: 88%;
   }
+
+  /* Embedded mode: chatbot loaded in an iframe (?embed=1).
+     Hide the standalone welcome page and launcher; widget fills the iframe. */
+  body.embedded {
+    background: var(--white);
+    min-height: 0;
+    display: block;
+  }
+  body.embedded .page-content,
+  body.embedded #chat-launcher {
+    display: none;
+  }
+  body.embedded #chat-widget {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    border-radius: 0;
+    border: none;
+    box-shadow: none;
+    transform: none;
+    opacity: 1;
+    pointer-events: all;
+    transition: none;
+  }
+  body.embedded #chat-widget.expanded {
+    width: 100%;
+    height: 100%;
+  }
+  body.embedded .expand-btn { display: none; }
 </style>
 </head>
 <body>
@@ -388,6 +445,20 @@
       <h2>API Member Assistant</h2>
       <p>Standards, protocols, and bank SI lookup</p>
     </div>
+    <button class="expand-btn" id="expand-btn" onclick="toggleExpand()" title="Expand chat" aria-label="Expand chat">
+      <svg class="icon-expand" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 3 21 3 21 9"/>
+        <polyline points="9 21 3 21 3 15"/>
+        <line x1="21" y1="3" x2="14" y2="10"/>
+        <line x1="3" y1="21" x2="10" y2="14"/>
+      </svg>
+      <svg class="icon-collapse" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="4 14 10 14 10 20"/>
+        <polyline points="20 10 14 10 14 4"/>
+        <line x1="14" y1="10" x2="21" y2="3"/>
+        <line x1="3" y1="21" x2="10" y2="14"/>
+      </svg>
+    </button>
     <button class="reset-btn" onclick="resetChat()" title="Start new conversation">New chat</button>
     <div class="status-dot"></div>
   </div>
@@ -430,7 +501,7 @@
         </svg>
       </button>
     </div>
-    <div class="input-footer">Australian Property Institute &nbsp;|&nbsp; NPC 2026 demo</div>
+    <div class="input-footer">Australian Property Institute &nbsp;|&nbsp; Demo</div>
   </div>
 </div>
 
@@ -438,10 +509,14 @@
 const MAX_CHARS = 40000;
 const SESSION_KEY = 'api_chat_history';
 
-let chatHistory  = [];
-let uploadedDocs = [];
-let isLoading    = false;
-let widgetOpen   = false;
+let chatHistory     = [];
+let uploadedDocs    = [];
+let isLoading       = false;
+let widgetOpen      = false;
+let widgetExpanded  = false;
+
+const isEmbedded = new URLSearchParams(location.search).get('embed') === '1';
+if (isEmbedded) document.body.classList.add('embedded');
 
 (function init() {
   try {
@@ -459,6 +534,11 @@ let widgetOpen   = false;
 const launcher = document.getElementById('chat-launcher');
 const widget   = document.getElementById('chat-widget');
 
+if (isEmbedded) {
+  widgetOpen = true;
+  widget.classList.add('open');
+}
+
 launcher.addEventListener('click', () => {
   widgetOpen = !widgetOpen;
   widget.classList.toggle('open', widgetOpen);
@@ -468,6 +548,15 @@ launcher.addEventListener('click', () => {
     document.querySelector('.launcher-badge')?.remove();
   }
 });
+
+function toggleExpand() {
+  widgetExpanded = !widgetExpanded;
+  widget.classList.toggle('expanded', widgetExpanded);
+  const btn = document.getElementById('expand-btn');
+  const label = widgetExpanded ? 'Collapse chat' : 'Expand chat';
+  btn.title = label;
+  btn.setAttribute('aria-label', label);
+}
 
 document.getElementById('doc-upload').addEventListener('change', async (e) => {
   const files = Array.from(e.target.files);
