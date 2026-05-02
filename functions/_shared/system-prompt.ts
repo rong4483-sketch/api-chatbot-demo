@@ -40,6 +40,30 @@ export function buildCachedSystemBlock(sources: CachedBlockSources): string {
   ].join('\n');
 }
 
+// Slim variant for fallback providers (OpenAI 128K, GROQ 128K) that cannot
+// fit the full 130K-token bank-si-matrix.json. Drops the matrix; keeps the
+// lookup index (so "which SI applies" still works) and the doc-index.
+export function buildSlimSystemBlock(sources: CachedBlockSources): string {
+  return [
+    BASE_SYSTEM_PROMPT,
+    '',
+    '(Note: detailed SI section content is unavailable on this fallback path. ' +
+      'You can identify which template applies but cannot quote section text.)',
+    '',
+    '---',
+    'SI Lookup Index (lender to property type to column ref + section count)',
+    '---',
+    '',
+    JSON.stringify(sources.siLookupIndex, null, 2),
+    '',
+    '---',
+    'Document Catalogue',
+    '---',
+    '',
+    JSON.stringify(sources.docIndex, null, 2),
+  ].join('\n');
+}
+
 export function buildPerCallContext(retrievedChunks: string, uploadedDocs: { name: string; text: string }[]): string {
   const parts: string[] = [];
   if (retrievedChunks) {

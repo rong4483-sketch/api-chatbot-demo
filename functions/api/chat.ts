@@ -2,6 +2,7 @@ import { isAllowedOrigin, corsHeaders, rejectOrigin } from '../_shared/origin-ch
 import { retrieve, formatChunksForPrompt } from '../_shared/retriever';
 import {
   buildCachedSystemBlock,
+  buildSlimSystemBlock,
   buildPerCallContext,
   getCachedSources,
 } from '../_shared/system-prompt';
@@ -21,7 +22,9 @@ interface RequestBody {
   uploadedDocs?: { name: string; text: string }[];
 }
 
-const FIRST_TOKEN_TIMEOUT_MS = 3000;
+// 10s accounts for cold-start: flexsearch index + Gemini cache create.
+// Warm calls return first token in well under 1s.
+const FIRST_TOKEN_TIMEOUT_MS = 10000;
 
 type ProviderFn = (opts: StreamChatOpts) => AsyncIterable<string>;
 
@@ -29,6 +32,9 @@ interface Provider {
   name: string;
   apiKey: string | undefined;
   fn: ProviderFn;
+  // Fallbacks (OpenAI, GROQ) cannot fit the full 130K-token SI matrix in
+  // their 128K context window, so they receive the slim block.
+  slim: boolean;
 }
 
 export const onRequestOptions: PagesFunction<Env> = async ({ request }) => {
@@ -72,13 +78,14 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     getCachedSources(origin),
   ]);
 
-  const systemBlockText = buildCachedSystemBlock(sources);
+  const fullBlock = buildCachedSystemBlock(sources);
+  const slimBlock = buildSlimSystemBlock(sources);
   const perCallContext = buildPerCallContext(formatChunksForPrompt(retrieved), uploadedDocs);
 
   const providers: Provider[] = [
-    { name: 'gemini', apiKey: env.GEMINI_API_KEY, fn: geminiStreamChat },
-    { name: 'openai', apiKey: env.OPENAI_API_KEY, fn: openaiStreamChat },
-    { name: 'groq', apiKey: env.GROQ_API_KEY, fn: groqStreamChat },
+    { name: 'gemini', apiKey: env.GEMINI_API_KEY, fn: geminiStreamChat, slim: false },
+    { name: 'openai', apiKey: env.OPENAI_API_KEY, fn: openaiStreamChat, slim: true },
+    { name: 'groq', apiKey: env.GROQ_API_KEY, fn: groqStreamChat, slim: true },
   ].filter(p => p.apiKey);
 
   const stream = new ReadableStream({
@@ -87,8 +94,6 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
       const send = (obj: unknown) =>
         controller.enqueue(encoder.encode(`data: ${JSON.stringify(obj)}\n\n`));
       const sendDone = () => controller.enqueue(encoder.encode('data: [DONE]\n\n'));
-
-      const sharedOpts = { systemBlockText, perCallContext, messages: body.messages };
 
       let firstTokenSent = false;
       let lastError: Error | null = null;
@@ -107,7 +112,9 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
 
           try {
             for await (const text of provider.fn({
-              ...sharedOpts,
+              systemBlockText: provider.slim ? slimBlock : fullBlock,
+              perCallContext,
+              messages: body.messages,
               apiKey: provider.apiKey as string,
               signal: ac.signal,
             })) {
